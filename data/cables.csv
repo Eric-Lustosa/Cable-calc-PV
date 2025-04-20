@@ -1,3 +1,16 @@
 fabricante,modelo,seção_mm2,resistividade_ohm_km,isolamento,tipo_cabo
-Nexans,SolarPlus 6mm,6,3.08,XLPE,DC
-Prysmian,AC-Pro 10mm,10,1.83,PVC,AC
+Genérico,Cabo-4mm,4,0.43103,XLPE,DC
+Genérico,Cabo-6mm,6,0.28735,XLPE,DC
+Genérico,Cabo-10mm,10,0.17241,XLPE,DC
+Genérico,Cabo-16mm,16,0.10776,XLPE,DC
+Genérico,Cabo-25mm,25,0.06896,XLPE,DC
+Genérico,Cabo-35mm,35,0.04926,XLPE,DC
+Genérico,Cabo-50mm,50,0.03448,XLPE,DC
+Genérico,Cabo-70mm,70,0.02463,XLPE,DC
+Genérico,Cabo-95mm,95,0.01815,XLPE,DC
+Genérico,Cabo-120mm,120,0.01437,XLPE,DC
+Genérico,Cabo-150mm,150,0.01149,XLPE,DC
+Genérico,Cabo-185mm,185,0.00932,XLPE,DC
+Genérico,Cabo-240mm,240,0.00718,XLPE,DC
+Genérico,Cabo-300mm,300,0.00575,XLPE,DC
+Genérico,Cabo-400mm,400,0.00431,XLPE,DC

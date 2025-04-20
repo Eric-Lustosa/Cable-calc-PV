@@ -1,0 +1,22 @@
+# Ignora arquivos e pastas comuns de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambientes virtuais
+env/
+venv/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# Arquivos temporários
+*.log
+*.tmp
+.DS_Store
+
+# Sistema operacional
+Thumbs.db
