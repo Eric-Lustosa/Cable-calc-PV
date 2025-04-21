@@ -1,35 +1,55 @@
 from utils.reader import carregar_cabos_de_csv
+from utils.fatores import carregar_fatores_de_csv
+from calculators.capacidade_corrente_corrigida import calcular_capacidade_corrigida
 from selectors.cable_selector import sugerir_cabo_dc
 
-# Carregar todos os cabos do arquivo CSV
+# === Dados de entrada ===
+corrente_circuito = 60
+comprimento = 1000
+tensao_nominal = 1500
+queda_maxima = 1.5
+tipo_instalacao = "eletroduto_no_solo"
+numero_cabos = 3
+
+# === Carregar dados ===
 cabos = carregar_cabos_de_csv("data/cables.csv")
+fatores_instalacao = carregar_fatores_de_csv("data/fatores_instalacao.csv", "tipo_instalacao", "fator")
+fatores_agrupamento = carregar_fatores_de_csv("data/fatores_agrupamento.csv", "numero_cabos", "fator")
 
-# === Dados de entrada do sistema ===
-corrente = 60                # Corrente em Amperes
-comprimento = 1000           # Comprimento do cabo (apenas ida), em metros
-tensao_nominal = 1500        # Tensão nominal do sistema em Volts
-queda_maxima = 1.5           # Queda de tensão máxima permitida, em %
+# === Filtrar cabos que suportam a corrente corrigida ===
+cabos_filtrados = []
+for cabo in cabos:
+    capacidade_corrigida = calcular_capacidade_corrigida(
+        cabo,
+        tipo_instalacao,
+        numero_cabos,
+        fatores_instalacao,
+        fatores_agrupamento
+    )
+    if capacidade_corrigida >= corrente_circuito:
+        cabos_filtrados.append(cabo)
 
-# Buscar o menor cabo que atenda à condição de queda de tensão
+# === Buscar cabo com menor queda de tensão dentre os que atendem à corrente ===
+from selectors.cable_selector import sugerir_cabo_dc
+
 cabo_ideal, queda_v, queda_pct = sugerir_cabo_dc(
-    cabos,
-    corrente,
+    cabos_filtrados,
+    corrente_circuito,
     comprimento,
     tensao_nominal,
     queda_maxima
 )
 
-# Mostrar resultado
+# === Saída ===
 print("==== RESULTADO ====")
-print(f"Corrente: {corrente} A")
-print(f"Comprimento (ida): {comprimento} m")
-print(f"Tensão nominal: {tensao_nominal} V")
-print(f"Queda máxima permitida: {queda_maxima}%")
+print(f"Corrente do circuito: {corrente_circuito} A")
+print(f"Tipo de instalação: {tipo_instalacao.replace('_', ' ').title()}")
+print(f"Cabos por eletroduto/vala: {numero_cabos}")
+print(f"Queda de tensão máxima permitida: {queda_maxima}%")
 print("--------------------")
 
 if cabo_ideal:
     print(f"Cabo sugerido: {cabo_ideal.modelo} ({cabo_ideal.secao_mm2} mm²)")
-    print(f"Resistividade: {cabo_ideal.resistividade_ohm_km:.5f} Ω/km")
     print(f"Queda de tensão: {queda_v:.2f} V ({queda_pct:.2f}%)")
 else:
-    print(" Nenhum cabo atende aos critérios definidos.")
+    print("❌ Nenhum cabo atende aos critérios definidos.")
