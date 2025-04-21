@@ -12,7 +12,8 @@ def carregar_cabos_de_csv(caminho_csv):
                 secao_mm2=float(row["seção_mm2"]),
                 resistividade_ohm_km=float(row["resistividade_ohm_km"]),
                 isolamento=row["isolamento"],
-                tipo_cabo=row["tipo_cabo"]
+                tipo_cabo=row["tipo_cabo"],
+                capacidade_nominal_a=float(row["capacidade_nominal_a"])  # <- novo campo
             )
             cabos.append(cabo)
     return cabos

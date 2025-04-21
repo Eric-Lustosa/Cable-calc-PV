@@ -2,25 +2,25 @@ from utils.reader import carregar_cabos_de_csv
 from utils.fatores import carregar_fatores_de_csv
 from calculators.capacidade_corrente_corrigida import calcular_capacidade_corrigida
 from calculators.voltage_drop import calcular_queda_tensao_dc
+from cable_selector.cable_selector import sugerir_cabo_dc  # novo nome da pasta
 
-# === Dados de entrada ===
-corrente_circuito = 60            # A
-comprimento = 1000                # m (ida)
-tensao_nominal = 1500             # V
-queda_maxima = 1.5                # %
-tipo_instalacao = "eletroduto_no_solo"
-numero_cabos = 3
+# === Entradas do projeto ===
+corrente_circuito = 60            # Corrente do circuito (A)
+comprimento = 1000                # Comprimento do cabo (ida, em metros)
+tensao_nominal = 1500             # Tensão do sistema (V)
+queda_maxima = 1.5                # Queda de tensão máxima permitida (%)
+tipo_instalacao = "eletroduto_no_solo"  # ID igual ao CSV
+numero_cabos = 3                  # Cabos no mesmo eletroduto ou vala
 
 # === Carregar dados ===
 cabos = carregar_cabos_de_csv("data/cables.csv")
 fatores_instalacao = carregar_fatores_de_csv("data/fatores_instalacao.csv", "tipo_instalacao", "fator")
 fatores_agrupamento = carregar_fatores_de_csv("data/fatores_agrupamento.csv", "numero_cabos", "fator")
 
-# === Filtrar os cabos por ambos os critérios ===
+# === Filtrar cabos que atendem à corrente corrigida e à queda de tensão ===
 cabos_validos = []
 
 for cabo in sorted(cabos, key=lambda c: c.secao_mm2):
-    # 1. Verifica a capacidade corrigida
     capacidade_corrigida = calcular_capacidade_corrigida(
         cabo,
         tipo_instalacao,
@@ -30,20 +30,18 @@ for cabo in sorted(cabos, key=lambda c: c.secao_mm2):
     )
 
     if capacidade_corrigida < corrente_circuito:
-        continue  # cabo não serve
+        continue  # Não atende à capacidade
 
-    # 2. Verifica a queda de tensão
     delta_v = calcular_queda_tensao_dc(cabo, corrente_circuito, comprimento)
     delta_v_pct = (delta_v / tensao_nominal) * 100
 
     if delta_v_pct > queda_maxima:
-        continue  # também não serve
+        continue  # Não atende à queda de tensão
 
-    # 3. Se passou nos dois, é o primeiro válido (menor seção que atende)
     cabos_validos.append((cabo, capacidade_corrigida, delta_v, delta_v_pct))
-    break
+    break  # pega apenas o menor cabo que atende aos dois critérios
 
-# === Resultado final ===
+# === Mostrar o resultado ===
 print("==== RESULTADO ====")
 print(f"Corrente do circuito: {corrente_circuito} A")
 print(f"Comprimento (ida): {comprimento} m")
