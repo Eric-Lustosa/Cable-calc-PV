@@ -5,29 +5,49 @@ from calculators.voltage_drop import calcular_queda_tensao_dc
 from cable_selector.cable_selector import sugerir_cabo_dc  # novo nome da pasta
 
 # === Entradas do projeto ===
-corrente_circuito = 60            # Corrente do circuito (A)
-comprimento = 1000                # Comprimento do cabo (ida, em metros)
-tensao_nominal = 1500             # Tensão do sistema (V)
-queda_maxima = 1.5                # Queda de tensão máxima permitida (%)
-tipo_instalacao = "eletroduto_no_solo"  # ID igual ao CSV
-numero_cabos = 3                  # Cabos no mesmo eletroduto ou vala
+corrente_circuito = 60
+comprimento = 1000
+tensao_nominal = 1500
+queda_maxima = 1.5
+tipo_instalacao = "eletroduto_no_solo"
+numero_cabos = 3
+temperatura_solo = 30                    # °C
+resistividade_solo = 1.5                 # K·m/W
+afastamento = "10cm"                     # string igual ao CSV
+disposicao = "horizontal"                # string igual ao CSV
 
 # === Carregar dados ===
 cabos = carregar_cabos_de_csv("data/cables.csv")
 fatores_instalacao = carregar_fatores_de_csv("data/fatores_instalacao.csv", "tipo_instalacao", "fator")
 fatores_agrupamento = carregar_fatores_de_csv("data/fatores_agrupamento.csv", "numero_cabos", "fator")
+fatores_temp = carregar_fatores_de_csv("data/fatores_temperatura.csv", "temperatura", "fator")
+fatores_resist = carregar_fatores_de_csv("data/fatores_resistividade_solo.csv", "resistividade_km_per_w", "fator")
+fatores_afast = carregar_fatores_de_csv("data/fatores_afastamento.csv", "afastamento", "fator")
+fatores_disp = carregar_fatores_de_csv("data/fatores_disposicao.csv", "disposicao", "fator")
+
 
 # === Filtrar cabos que atendem à corrente corrigida e à queda de tensão ===
 cabos_validos = []
 
 for cabo in sorted(cabos, key=lambda c: c.secao_mm2):
     capacidade_corrigida = calcular_capacidade_corrigida(
-        cabo,
-        tipo_instalacao,
-        numero_cabos,
-        fatores_instalacao,
-        fatores_agrupamento
-    )
+    cabo,
+    tipo_instalacao,
+    numero_cabos,
+    temperatura_solo,
+    resistividade_solo,
+    afastamento,
+    disposicao,
+    fatores_instalacao,
+    fatores_agrupamento,
+    fatores_temp,
+    fatores_resist,
+    fatores_afast,
+    fatores_disp
+)
+
+
+    #Texto teste para bott.dev
 
     if capacidade_corrigida < corrente_circuito:
         continue  # Não atende à capacidade
