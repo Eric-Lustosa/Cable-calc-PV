@@ -43,11 +43,24 @@ for i, trecho in enumerate(trechos):
     )
 
     print(f"\nTrecho {i + 1}: {trecho.origem} → {trecho.destino} ({trecho.tipo})")
+    print("📥 Entradas:")
+    print(f"  - Corrente: {trecho.corrente} A")
+    print(f"  - Tensão: {trecho.tensao} V")
+    print(f"  - Comprimento (ida): {trecho.comprimento} m")
+    print(f"  - Método de instalação: {trecho.tipo_instalacao.replace('_', ' ').title()}")
+    print(f"  - Nº de cabos agrupados: {trecho.numero_cabos}")
+    print(f"  - Temperatura do solo: {trecho.temperatura_solo} °C")
+    print(f"  - Resistividade térmica do solo: {trecho.resistividade_solo} K·m/W")
+    print(f"  - Afastamento: {trecho.afastamento}")
+    print(f"  - Disposição: {trecho.disposicao}")
+    print(f"  - Queda de tensão máxima permitida: {queda_maxima_pct:.2f} %")
 
     if resultado:
         cabo = resultado["cabo"]
-        print(f"  ✔️ Cabo sugerido: {cabo.modelo} ({cabo.secao_mm2} mm²)")
+        print("✅ Resultado:")
+        print(f"  → Cabo sugerido: {cabo.modelo} ({cabo.secao_mm2} mm²)")
         print(f"  → Capacidade corrigida: {resultado['capacidade_corrigida']:.1f} A")
-        print(f"  → Queda de tensão: {resultado['queda_v']:.2f} V ({resultado['queda_pct']:.2f}%)")
+        print(f"  → Queda de tensão obtida: {resultado['queda_v']:.2f} V ({resultado['queda_pct']:.2f}%)")
     else:
-        print("  ❌ Nenhum cabo atende aos critérios para esse trecho.")
+        print("❌ Nenhum cabo atende aos critérios para esse trecho.")
+        print(f"  → Provável motivo: corrente muito alta ou queda > {queda_maxima_pct:.2f}% com os cabos disponíveis.")
