@@ -1,5 +1,6 @@
 from calculators.capacidade_corrente_corrigida import calcular_capacidade_corrigida
-from calculators.voltage_drop import calcular_queda_tensao_dc
+from calculators.voltage_drop import calcular_queda_tensao
+
 
 def dimensionar_trecho(
     trecho,
