@@ -1,0 +1,34 @@
+{
+    "queda_maxima_pct": 1.5,
+    "trechos": [
+        {
+            "tipo": "DC",
+            "origem": "string",
+            "destino": "inversor",
+            "corrente": 10,
+            "tensao": 600,
+            "comprimento": 30,
+            "tipo_instalacao": "eletroduto_no_solo",
+            "numero_cabos": 2,
+            "temperatura_solo": 30,
+            "resistividade_solo": 1.5,
+            "afastamento": "sem_afastamento",
+            "disposicao": "horizontal"
+        },
+        {
+            "tipo": "AC",
+            "origem": "inversor",
+            "destino": "trafo",
+            "corrente": 120,
+            "tensao": 400,
+            "comprimento": 80,
+            "tipo_instalacao": "direto_no_solo",
+            "numero_cabos": 4,
+            "temperatura_solo": 30,
+            "resistividade_solo": 2.0,
+            "afastamento": "20cm",
+            "disposicao": "trifolio",
+            "tipo_circuito": "trifasico"
+        }
+    ]
+}
