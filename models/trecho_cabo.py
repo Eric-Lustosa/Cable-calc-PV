@@ -12,9 +12,10 @@ class TrechoCabo:
         temperatura_solo,
         resistividade_solo,
         afastamento,
-        disposicao
+        disposicao,
+        tipo_circuito="trifasico"  # só aplicável se tipo == "AC"
     ):
-        self.tipo = tipo
+        self.tipo = tipo.upper()
         self.origem = origem
         self.destino = destino
         self.corrente = corrente
@@ -26,3 +27,6 @@ class TrechoCabo:
         self.resistividade_solo = resistividade_solo
         self.afastamento = afastamento
         self.disposicao = disposicao
+
+        # Se for AC, armazenar tipo_circuito ("monofasico" ou "trifasico")
+        self.tipo_circuito = tipo_circuito.lower() if self.tipo == "AC" else None

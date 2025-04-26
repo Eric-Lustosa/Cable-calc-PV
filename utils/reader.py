@@ -1,5 +1,24 @@
+import csv
 import json
+from models.cable import Cable
 from models.trecho_cabo import TrechoCabo
+
+def carregar_cabos_de_csv(caminho_csv):
+    cabos = []
+    with open(caminho_csv, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            cabo = Cable(
+                fabricante=row["fabricante"],
+                modelo=row["modelo"],
+                secao_mm2=float(row["seção_mm2"]),
+                resistividade_ohm_km=float(row["resistividade_ohm_km"]),
+                isolamento=row["isolamento"],
+                tipo_cabo=row["tipo_cabo"],
+                capacidade_nominal_a=float(row["capacidade_nominal_a"])
+            )
+            cabos.append(cabo)
+    return cabos
 
 def carregar_projeto_json(caminho_arquivo):
     with open(caminho_arquivo, "r", encoding="utf-8") as f:
@@ -22,7 +41,7 @@ def carregar_projeto_json(caminho_arquivo):
             resistividade_solo=t["resistividade_solo"],
             afastamento=t["afastamento"],
             disposicao=t["disposicao"],
-            tipo_circuito=t.get("tipo_circuito", "trifasico")  # padrão trifásico se não informado
+            tipo_circuito=t.get("tipo_circuito", "trifasico")
         )
         trechos.append(trecho)
 

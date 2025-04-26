@@ -1,0 +1,34 @@
+
+Trecho 1: string → inversor (DC)
+📥 Entradas:
+  - Corrente: 10 A
+  - Tensão: 600 V
+  - Comprimento (ida): 30 m
+  - Método de instalação: Eletroduto No Solo
+  - Nº de cabos agrupados: 2
+  - Temperatura do solo: 30 °C
+  - Resistividade térmica do solo: 1.5 K·m/W
+  - Afastamento: sem_afastamento
+  - Disposição: horizontal
+  - Queda de tensão máxima permitida: 1.50 %
+✅ Resultado:
+  → Cabo sugerido: Cabo-95mm-AC (95.0 mm²)
+  → Capacidade corrigida: 130.4 A
+  → Queda de tensão obtida: 0.30 V (0.08%)
+
+Trecho 2: inversor → trafo (AC)
+📥 Entradas:
+  - Corrente: 120 A
+  - Tensão: 400 V
+  - Comprimento (ida): 80 m
+  - Método de instalação: Direto No Solo
+  - Nº de cabos agrupados: 4
+  - Temperatura do solo: 30 °C
+  - Resistividade térmica do solo: 2.0 K·m/W
+  - Afastamento: 20cm
+  - Disposição: trifolio
+  - Queda de tensão máxima permitida: 1.50 %
+✅ Resultado:
+  → Cabo sugerido: Cabo-95mm-AC (95.0 mm²)
+  → Capacidade corrigida: 130.4 A
+  → Queda de tensão obtida: 0.30 V (0.08%)
