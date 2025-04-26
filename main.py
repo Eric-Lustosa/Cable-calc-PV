@@ -2,17 +2,14 @@ from utils.reader import carregar_cabos_de_csv
 from utils.fatores import carregar_fatores_de_csv
 from calculators.dimensionamento import dimensionar_trecho
 from models.trecho_cabo import TrechoCabo
+from utils.reader import carregar_projeto_json
 
 # === Entradas do sistema ===
 
 queda_maxima_pct = 1.5
 
 # Exemplo de sistema: Inversor string COM combiner AC
-trechos = [
-    TrechoCabo("DC", "string", "inversor", 10, 600, 30, "eletroduto_no_solo", 2, 30, 1.5, "sem_afastamento", "horizontal"),
-    TrechoCabo("AC", "inversor", "combiner_box_ac", 25, 230, 50, "eletroduto_no_solo", 3, 30, 1.5, "10cm", "horizontal"),
-    TrechoCabo("AC", "combiner_box_ac", "trafo", 120, 400, 80, "direto_no_solo", 4, 30, 2.0, "20cm", "trifolio"),
-]
+queda_maxima_pct, trechos = carregar_projeto_json("inputs/projeto.json")
 
 # === Carregar dados dos cabos ===
 cabos = carregar_cabos_de_csv("data/cables.csv")
