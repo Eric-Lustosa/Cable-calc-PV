@@ -4,6 +4,7 @@ from calculators.dimensionamento import dimensionar_trecho
 from models.trecho_cabo import TrechoCabo
 from utils.reader import carregar_projeto_json
 from utils.reports import salvar_relatorio_txt
+
 # === Entradas do sistema ===
 
 queda_maxima_pct = 1.5
@@ -26,7 +27,7 @@ fatores_disp = carregar_fatores_de_csv("data/fatores_disposicao.csv", "disposica
 # === Executar dimensionamento trecho a trecho ===
 
 print("==== DIMENSIONAMENTO DO SISTEMA ====")
-
+resultados_trechos = []
 for i, trecho in enumerate(trechos):
     resultado = dimensionar_trecho(
         trecho=trecho,
@@ -64,6 +65,11 @@ for i, trecho in enumerate(trechos):
         print(f"  → Provável motivo: corrente muito alta ou queda > {queda_maxima_pct:.2f}% com os cabos disponíveis.")
 relatorio = ""
 
+resultados_trechos.append({
+        "trecho": trecho,
+        "resultado": resultado
+    })
+
 for i, trecho in enumerate(trechos):
     # mesma lógica de prints...
     relatorio += f"\nTrecho {i + 1}: {trecho.origem} → {trecho.destino} ({trecho.tipo})\n"
@@ -87,5 +93,12 @@ for i, trecho in enumerate(trechos):
     else:
         relatorio += "❌ Nenhum cabo atende aos critérios para esse trecho.\n"
 
-salvar_relatorio_txt("reports/relatorio_projeto.txt", relatorio)
+# Salvar relatório
+salvar_relatorio_txt(
+    caminho_arquivo="reports/relatorio_projeto.txt",
+    trechos_resultados=resultados_trechos,
+    queda_maxima_pct=queda_maxima_pct,
+    nome_projeto="Sistema FV - Exemplo"
+)
+
 print("\n📄 Relatório salvo em: reports/relatorio_projeto.txt")
